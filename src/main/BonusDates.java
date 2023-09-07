@@ -88,9 +88,6 @@ public class BonusDates {
      * @param toYear   - must be larger than fromYear and no less than 1
      */
     public static void printBonusDatesBetween(int fromYear, int toYear) {
-        if (fromYear < 1 || toYear < 1 || fromYear >= toYear) {
-            throw new IllegalArgumentException();
-        }
         int startYear = fromYear;
         int startMonth = 1;
         int startDay = 1;
@@ -112,6 +109,24 @@ public class BonusDates {
     }
 
     public static void main(String[] args) {
-        printBonusDatesBetween(2010, 27015);
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Please enter two arguments");
+        }
+        int fromYear = parseInt(args[0]);
+        int toYear = parseInt(args[1]);
+        if (toYear > 9999 || fromYear < 1000 || fromYear >= toYear) {
+            throw new IllegalArgumentException("Valid arguments only between 1000 and 9999. " +
+                    "First argument has to be smaller than the second");
+        }
+
+        printBonusDatesBetween(fromYear, toYear);
+    }
+
+    private static int parseInt(String arg) {
+        try {
+            return Integer.parseInt(arg);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Arguments must be numbers");
+        }
     }
 }
