@@ -20,22 +20,22 @@ public class BonusDatesTest {
     }
 
     @Test
-    public void januaryHas31Day(){
-        assertEquals(31,BonusDates.getDaysInMonth(2023, 1));
+    public void januaryHas31Day() {
+        assertEquals(31, BonusDates.getDaysInMonth(2023, 1));
     }
 
     @Test
-    public void februaryHas28DaysIn2023(){
-        assertEquals(28,BonusDates.getDaysInMonth(2023, 2));
+    public void februaryHas28DaysIn2023() {
+        assertEquals(28, BonusDates.getDaysInMonth(2023, 2));
     }
 
     @Test
-    public void februaryHas29DaysIn2020(){
-        assertEquals(29,BonusDates.getDaysInMonth(2020, 2));
+    public void februaryHas29DaysIn2020() {
+        assertEquals(29, BonusDates.getDaysInMonth(2020, 2));
     }
 
     @Test
-    public void ThirteenthMonthThrowsException(){
+    public void ThirteenthMonthThrowsException() {
         assertThrowsExactly(IllegalArgumentException.class, () -> BonusDates.getDaysInMonth(2023, 13));
     }
 
