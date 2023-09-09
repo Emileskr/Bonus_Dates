@@ -5,11 +5,10 @@ public class BonusDates {
         }
         int fromYear = parseInt(args[0]);
         int toYear = parseInt(args[1]);
-        if (toYear > 9999 || fromYear < 1000 || fromYear >= toYear) {
-            throw new IllegalArgumentException("Valid arguments only between 1000 and 9999. " +
-                    "First argument has to be smaller than the second");
+        if (fromYear <= 0 || fromYear >= toYear) {
+            throw new IllegalArgumentException("Years must be larger than 0"
+                    + "First argument has to be smaller than the second");
         }
-
         printBonusDatesBetween(fromYear, toYear);
     }
 
@@ -34,16 +33,19 @@ public class BonusDates {
         int endYear = toYear - 1;
         int endMonth = 12;
         int endDay = 31;
-        String dateToCheck = String.format("%04d%02d%02d", startYear, startMonth, startDay);
+        String dateToCheck = startYear + String.format("%02d%02d", startMonth, startDay);
 
         while (startYear < endYear || startMonth != endMonth || startDay != endDay) {
+            String year = dateToCheck.substring(0, dateToCheck.length()-4);
+            String month = dateToCheck.substring(dateToCheck.length()-4, dateToCheck.length()-2);
+            String day = dateToCheck.substring(dateToCheck.length()-2);
+
             if (isPalindrome(dateToCheck)) {
-                System.out.println(dateToCheck.substring(0, 4) + "-" + dateToCheck.substring(4, 6)
-                        + "-" + dateToCheck.substring(6));
+                System.out.println(year + "-" + month + "-" + day);
             }
-            startYear = Integer.parseInt(dateToCheck.substring(0, 4));
-            startMonth = Integer.parseInt(dateToCheck.substring(4, 6));
-            startDay = Integer.parseInt(dateToCheck.substring(6));
+            startYear = Integer.parseInt(year);
+            startMonth = Integer.parseInt(month);
+            startDay = Integer.parseInt(day);
             dateToCheck = getNextDate(startYear, startMonth, startDay);
         }
     }
@@ -89,7 +91,7 @@ public class BonusDates {
             day++;
         }
 
-        return String.format("%04d%02d%02d", year, month, day);
+        return year + String.format("%02d%02d", month, day);
     }
 
     /**
