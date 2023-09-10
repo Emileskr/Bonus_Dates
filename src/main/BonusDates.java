@@ -1,4 +1,10 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class BonusDates {
+    public static final int END_MONTH = 12;
+    public static final int END_DAY = 31;
+    public static final ArrayList<Integer> MONTHS_WITH_30DAYS = new ArrayList<>(List.of(4, 6, 9, 11));
     public static void main(String[] args) {
         if (args.length != 2) {
             throw new IllegalArgumentException("Please enter two arguments");
@@ -27,25 +33,34 @@ public class BonusDates {
      * @param toYear   - must be larger than fromYear and no less than 1
      */
     public static void printBonusDatesBetween(int fromYear, int toYear) {
+        if (fromYear <= 0 || fromYear >= toYear) {
+            throw new IllegalArgumentException("Years must be larger than 0"
+                    + "First argument has to be smaller than the second");
+        }
         int startYear = fromYear;
         int startMonth = 1;
         int startDay = 1;
         int endYear = toYear - 1;
-        int endMonth = 12;
-        int endDay = 31;
         String dateToCheck = startYear + String.format("%02d%02d", startMonth, startDay);
 
-        while (startYear < endYear || startMonth != endMonth || startDay != endDay) {
+        while (startYear < endYear || startMonth != END_MONTH || startDay != END_DAY) {
             String year = dateToCheck.substring(0, dateToCheck.length()-4);
             String month = dateToCheck.substring(dateToCheck.length()-4, dateToCheck.length()-2);
             String day = dateToCheck.substring(dateToCheck.length()-2);
 
-            if (isPalindrome(dateToCheck)) {
-                System.out.println(year + "-" + month + "-" + day);
-            }
-            startYear = Integer.parseInt(year);
-            startMonth = Integer.parseInt(month);
-            startDay = Integer.parseInt(day);
+           if (year.length()>3 && (year.charAt(1) > '3' || year.charAt(3) > '1')){
+               startYear = Integer.parseInt(year);
+               startMonth = END_MONTH;
+               startDay = END_DAY;
+           } else {
+               if (isPalindrome(dateToCheck)) {
+                   System.out.println(year + "-" + month + "-" + day);
+               }
+               startYear = Integer.parseInt(year);
+               startMonth = Integer.parseInt(month);
+               startDay = Integer.parseInt(day);
+           }
+
             dateToCheck = getNextDate(startYear, startMonth, startDay);
         }
     }
@@ -80,7 +95,7 @@ public class BonusDates {
         if (year < 1 || month < 1 || month > 12 || day < 1 || day > daysInMonth) {
             throw new IllegalArgumentException();
         }
-        if (month == 12 && day == daysInMonth) {
+        if (month == END_MONTH && day == daysInMonth) {
             year++;
             month = 1;
             day = 1;
@@ -111,7 +126,7 @@ public class BonusDates {
             } else {
                 return 28;
             }
-        } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+        } else if (MONTHS_WITH_30DAYS.contains(month)) {
             return 30;
         } else {
             return 31;
